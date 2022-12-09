@@ -1,0 +1,26 @@
+{
+  "name": "pokemonmatcher",
+  "version": "1.0.0",
+  "description": "pokemon tinder hehe",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElmofiedBoby/PokemonMatcher.git"
+  },
+  "keywords": [
+    "pokemon",
+    "tinder",
+    "matcher",
+    "match",
+    "game"
+  ],
+  "author": "Nithin, Abril, Atharv, Isabella",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ElmofiedBoby/PokemonMatcher/issues"
+  },
+  "homepage": "https://github.com/ElmofiedBoby/PokemonMatcher#readme"
+}
