@@ -1,0 +1,6 @@
+#card {
+    width: 200px;
+    height: 500px;
+    border-style: groove;
+    border-width: 1px;
+}

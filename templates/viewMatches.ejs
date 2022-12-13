@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Pokemon Matcher | Create Pokemon</title>
+	<link rel="stylesheet" href="style.css">
+	<link href="https://fonts.cdnfonts.com/css/pokemon-solid" rel="stylesheet">
+	<script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+
+</head>
+
+<body id="homePage">
+	<a href="/" id="homeButton" class="button-55" role="button"><iconify-icon style="color: #e4000f ;" width="45" height="45" icon="mdi:pokeball"></iconify-icon>
+	</a>
+	<div id="menu">
+    	<h1>View your Matches!</h1>
+	
+		<h3>Select a match to view the profile</h3>
+		<%- Pictures%>
+		<form action="http://localhost:<%- portNumber %>/viewMatchesProcess" method="post">
+
+			<input type="submit" value="View Information!">
+		</form>
+
+	</div>
+</body>
+</html>

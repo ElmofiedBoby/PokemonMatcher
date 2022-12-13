@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>Pokemon Matcher | Match</title>
+		<link href="https://fonts.cdnfonts.com/css/pokemon-solid" rel="stylesheet">
+		<link rel="stylesheet" href="style.css">
+		<script>
+			const typeColor = {
+				bug: "#26de81",
+				dragon: "#ffeaa7",
+				electric: "#fed330",
+				fairy: "#FF0069",
+				fighting: "#30336b",
+				fire: "#f0932b",
+				flying: "#81ecec",
+				grass: "#00b894",
+				ground: "#EFB549",
+				ghost: "#a55eea",
+				ice: "#74b9ff",
+				normal: "#95afc0",
+				poison: "#6c5ce7",
+				psychic: "#a29bfe",
+				rock: "#2d3436",
+				water: "#0190FF",
+			};
+
+			const type = document.getElementById("type");
+			const themeColor = typeColor[type.name];
+
+		</script>
+		<style>
+			.pokemon {
+				position: relative;
+				background: url('cards/fire.png') no-repeat center;
+				scale: 85%;
+				height: 85vh;
+				padding-top: 4rem;
+				
+			}
+
+			.inner-image {
+				position: relative;
+				height: 45%;
+			}
+		</style>
+	</head>
+
+	<body id="matchPage">
+		<a href="/" id="homeButton" class="button-55" role="button">HOME</a>
+		<div id="matchScreen">
+			<div class="pokeBack">
+				<div class="pokemon">
+					<img class="inner-image" src="<%- Picture%>">
+					<h1 id="matchName"><%- NAME %></h1>
+				</div>
+			</div>
+			<form id="matchForm" method="POST" onsubmit="window.location.reload();">
+				<input type="hidden" name="name" value="<%- NAME %>" readonly>
+				<input type="submit" value="MATCH!" class="button-55" role="button">
+				<input type="button" value="REJECT" class="button-55" role="button" onClick="window.location.reload();"> 
+			</form>
+		</div>
+	</body>
+	
+</html>
