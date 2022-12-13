@@ -119,12 +119,12 @@ app.get("/match", (request, response) => {
 
 function getImage(name) {
 	return P.getPokemonByName(name) // with Promise
-	.then((webresponse) => {
-		return webresponse["sprites"].front_default;
-	})
-	.catch((error) => {
-		console.log('There was an ERROR: ', error);
-	});
+		.then((webresponse) => {
+			return webresponse["sprites"].front_default;
+		})
+		.catch((error) => {
+			console.log('There was an ERROR: ', error);
+		});
 }
 
 app.get("/viewMatches", async (request, response) => {
@@ -149,14 +149,15 @@ app.get("/viewMatches", async (request, response) => {
 	let result = await main().catch(console.error);
 	console.log("Picture");
 	console.log(await getImage("seaking"));
+	let link = await getImage("seaking");
 	let str="";
-	for(let x in result){
-		str = str + x.name + "<br><img + src=" + await getImage(x.name) +  "><br>";
+	for(const property in result){
+		str = str + property.name + "<br><img + src=" + await getImage(property.name) +  "><br>";
 	}
 	//str = result.map(u => u.name + "<br><img + src=" + await getImage(u.name) +  "><br>").join("");
 	const variables = {
 		portNumber: portNumber,
-		Pictures: str
+		Pictures: "<img + src=" + link +  ">"
 	}
 	response.render("viewMatches", variables);
 
