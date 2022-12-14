@@ -37,5 +37,7 @@ jobs:
           cache: npm
           # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
           cache-dependency-path: package-lock.json
+      - name: Install Dependencies
+        run: npm i
       - name: Run Server on port 80
         run: node pokemonFinderServer.js 80
