@@ -312,8 +312,9 @@ function randomStr(len, arr) {
 }
 
 /* Server Console Logic */
-var dataInput = '';
-app.listen(portNumber);
+//var dataInput = '';
+app.listen(portNumber, () => console.log("Server is running..."));
+/*
 console.log(`Web server started and running at http://localhost:${portNumber}`);
 process.stdin.setEncoding("utf8");
 process.stdout.write("^_^: ")
@@ -347,4 +348,4 @@ process.stdin.on('readable', () => {
 		}
 		process.stdout.write("^_^: ");
 	}
-});
+});*/
