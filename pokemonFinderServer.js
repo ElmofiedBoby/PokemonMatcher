@@ -188,7 +188,7 @@ app.get("/viewMatches", async (request, response) => {
 			if(name != 0) {
 				html += name % 6 === 0 ? '</tr><tr class="pcrow">' : '';
 			}
-			html += "<td class=\"pcentry\"><form method=\"POST\" action=\"/viewMatches\"><input type=\"text\" name=\"name\" value=\""+result.matches[name][0]+"\" readonly><br><input type=\"image\" src=\""+result.matches[name][1]+"\" name=\"selectImage\" id=\"selectImage\"/></form></td>";
+			html += "<td class=\"pcentry\"><form method=\"POST\" action=\"/viewMatches\"><input type=\"text\" name=\"name\" class=\"name\" value=\""+result.matches[name][0]+"\" readonly><br><input type=\"image\" src=\""+result.matches[name][1]+"\" name=\"selectImage\" id=\"selectImage\"/></form></td>";
 		}
 		html += '</tr></table>';
 		const variables = {
