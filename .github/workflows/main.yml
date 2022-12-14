@@ -37,6 +37,18 @@ jobs:
           cache: npm
           # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
           cache-dependency-path: package-lock.json
+      - name: Create .env file
+        # You may pin to the exact commit or the version.
+        # uses: SpicyPizza/create-envfile@a8e32e193370fc80ac4d090ac674b4ae101dc97d
+        uses: SpicyPizza/create-envfile@v1.3.0
+        with:
+          # The filename for the envfile
+          file_name: .env # optional, default is .env
+          envkey_MONGO_DB_USERNAME: "YOUR_USERNAME"
+          envkey_MONGO_DB_PASSWORD: "YOUR_PASSWORD"
+          envkey_MONGO_DB_NAME: "PokemonMatcher"
+          envkey_MONGO_COLLECTION_USERS: "users"
+          envkey_MONGO_COLLECTION_MATCHES: "matches"
       - name: Install Dependencies
         run: npm i
       - name: Run Server on port 80
