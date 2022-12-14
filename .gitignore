@@ -108,3 +108,5 @@ package-lock.json
 
 # mongo env file
 .env
+
+static/pfp/*
