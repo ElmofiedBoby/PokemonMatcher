@@ -5,6 +5,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import multer from 'multer';
+import fs from 'fs';
 
 //require('alert');
 /* Port Arguments */
@@ -156,7 +157,7 @@ app.post("/createPokemon", multer({storage: storage}).single("image"), (requests
 		}
 		else {
 			await users.insertOne({
-				image: requests.file.filename,
+				image: requests.file.path,
 				username: requests.body.username,
 				name: requests.body.name,
 				type: requests.body.type,
@@ -334,11 +335,23 @@ process.stdin.on('readable', () => {
 			process.exit(0);
 		}
 		else if(command == "clear") {
-			console.log("Clearing databases");
+			console.log("Clearing databases and profile pictures");
 			mongoclient.connect(async err => {
 				await users.deleteMany();
 				await matches.deleteMany();
 				await mongoclient.close();
+			});
+			fs.rmdir('static/pfp', {recursive:true, force:true}, (err) => {
+				if(err) {
+					return console.log("deletion error",err);
+				}
+				//console.log("successful delete");
+				fs.mkdir('static/pfp', {}, (err) => {
+					if(err) {
+						return console.log("creation error",err);
+					}
+					//console.log("successful create");
+				});
 			});
 		}
 		else if(command =="test") {
