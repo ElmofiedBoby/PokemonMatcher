@@ -30,9 +30,9 @@ jobs:
         uses: actions/setup-node@v3.5.1
         with:
           # Set always-auth in npmrc.
-          always-auth: false # optional, default is false
+          always-auth: false
           # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
-          node-version: 12.x# optional
+          node-version: 12.x
           # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
           cache: npm
           # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
