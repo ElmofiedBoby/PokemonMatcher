@@ -342,21 +342,6 @@ process.stdin.on('readable', () => {
 				});
 			});
 		}
-		else if(command == "test") {
-			mongoclient.connect(async err => {
-				const pokemoninfo = await getPokemonInfo("pikachu");
-				console.log(pokemoninfo["abilities"][0]["ability"].url)
-				P.getResource(pokemoninfo["abilities"][0]["ability"].url)
-				.then((response) => {
-					for(let name in response["effect_entries"]) {
-						if(response["effect_entries"][name]["language"].name == "en") {
-							console.log(response["effect_entries"][name].effect);
-						}
-					}
-					//console.log(response["effect_entries"]); // the getResource function accepts singles or arrays of URLs/paths
-				});
-			});
-		}
 		else {
 			console.log(`Invalid command: ${command}`);
 		}
