@@ -264,10 +264,6 @@ app.post("/match", (request, response) => {
 
 
 /* Functions */
-function getProfile() {
-	mongoclient.db.getCollection();
-}
-
 function getImage(name) {
 	return P.getPokemonByName(name) // with Promise
 		.then((webresponse) => {
