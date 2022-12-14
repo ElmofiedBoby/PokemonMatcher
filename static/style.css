@@ -201,3 +201,18 @@ select{
     top:10px;
     right:10px;
 }
+
+.pcrow {
+
+}
+
+.pcentry {
+
+}
+
+#pctable {
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    table-layout: fixed;
+}

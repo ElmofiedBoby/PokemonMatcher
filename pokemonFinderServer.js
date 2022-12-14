@@ -184,7 +184,19 @@ function getImage(name) {
 		});
 }
 
+function getPokemonInfo(name) {
+	return P.getPokemonByName(name) // with Promise
+		.then((webresponse) => {
+			return webresponse;
+		})
+		.catch((error) => {
+			console.log('There was an ERROR: ', error);
+			return error;
+		});
+}
+
 app.get("/viewMatches", async (request, response) => {
+	/*
 	async function main() {
 		try {
 			await mongoclient.connect();
@@ -199,10 +211,26 @@ app.get("/viewMatches", async (request, response) => {
 		} finally {
 			await mongoclient.close();
 		}
-
 	}
-
-
+	*/
+	mongoclient.connect(async err => {
+		let result = await users.findOne({username: username});
+		let html = '<table id=\"pctable\">';
+		for(var name in result.matches) {
+			if(name != 0) {
+				html += name % 6 === 0 ? '</tr><tr class="pcrow">' : '';
+			}
+			//html += "<td class=\"pcentry\">"+result.matches[name]+"<br><img src=\""+await getImage(result.matches[name])+"\"></td>";
+			html += "<td class=\"pcentry\"><form method=\"POST\" action=\"/viewMatches\"><input type=\"text\" name=\"name\" value=\""+result.matches[name]+"\" readonly><br><input type=\"image\" src=\""+await getImage(result.matches[name])+"\" name=\"selectImage\" id=\"selectImage\"/></form></td>";
+		}
+		html += '</tr></table>';
+		const variables = {
+			portNumber: portNumber,
+			Pictures: html
+		}
+		response.render("viewMatches", variables);
+	});
+	/*
 	let result = await main().catch(console.error);
 	console.log("Picture");
 	console.log(await getImage("seaking"));
@@ -217,22 +245,32 @@ app.get("/viewMatches", async (request, response) => {
 		Pictures: "<img + src=" + link +  ">"
 	}
 	response.render("viewMatches", variables);
+	*/
+	
+});
 
-})
+app.post("/viewMatches", (request, response) => {
 
-app.post("/viewMatchesProcess", (request, response) => {
-	const variables = {
-		NAME: "name",
-		Picture: "Picture",
-		Type: "type:",
-		Gender: "Gender",
-		Species: "Species",
-		Height: "Height",
-		Ability: "Ability",
-		backgroundInfo: "Background Information"
-
+	async function getInfo() {
+		const pokemoninfo = await getPokemonInfo(request.body.name);
+		let html = '<ol>';
+		for(let i in pokemoninfo["abilities"]) {
+			html += '<li>'+pokemoninfo["abilities"][i]["ability"].name+'</li>';
+		}
+		html += '</ol>';
+		const variables = {
+			NAME: request.body.name,
+			Picture: pokemoninfo["sprites"].front_default,
+			Type: pokemoninfo["types"][0]["type"].name,
+			Gender: Math.floor(Math.random()*11) > 5 ? 'Male' : 'Female',
+			Species: pokemoninfo["species"].name,
+			Height: pokemoninfo["height"],
+			Ability: html,
+			backgroundInfo: "n/a"
+		}
+		response.render("viewMatchesProfile", variables);
 	}
-	response.render("viewMatchesProcess", variables);
+	getInfo();
 })
 
 app.post("/match", (request, response) => {
@@ -279,6 +317,30 @@ process.stdin.on('readable', () => {
 				await matches.deleteMany();
 				await mongoclient.close();
 			});
+		}
+		else if(command =="test") {
+			async function getInfo() {
+				const pokemoninfo = await getPokemonInfo("pikachu");
+				const abilities = pokemoninfo["abilities"];
+				let html = '';
+				for(let i in pokemoninfo["abilities"]) {
+					console.log(i);
+					console.log(pokemoninfo["abilities"][i]["ability"].name + " - " + pokemoninfo["abilities"][i]["ability"].url);
+				}
+				const variables = {
+					NAME: "pikachu",
+					Picture: await getImage("pikachu"),
+					Type: pokemoninfo["types"][0]["type"].name,
+					Gender: Math.floor(Math.random()*11) > 5 ? 'Male' : 'Female',
+					Species: pokemoninfo["species"].name,
+					Height: pokemoninfo["height"],
+					Ability: pokemoninfo["abilities"],
+					backgroundInfo: null
+				}
+				//console.log(abilities[0]["ability"].name);
+			}
+			console.log("testing with: pikachu");
+			getInfo();
 		}
 		else {
 			console.log(`Invalid command: ${command}`);
