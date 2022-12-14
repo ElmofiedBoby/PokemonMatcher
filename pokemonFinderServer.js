@@ -7,7 +7,6 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 import multer from 'multer';
 import fs from 'fs';
 
-//require('alert');
 /* Port Arguments */
 if (process.argv.length !== 3) {
 	console.log(">:(\nUsage: pokemonFinderServer.js portNumber");
@@ -31,7 +30,6 @@ const P = new Pokedex();
 
 let loggedin = false;
 let username = null;
-let nameOfUser;
 
 /* App Setup */
 const app = express();
@@ -194,10 +192,6 @@ app.get("/match", (request, response) => {
 		});
 });
 
-function appendPng() {
-
-}
-
 function getImage(name) {
 	return P.getPokemonByName(name) // with Promise
 		.then((webresponse) => {
@@ -220,23 +214,7 @@ function getPokemonInfo(name) {
 }
 
 app.get("/viewMatches", async (request, response) => {
-	/*
-	async function main() {
-		try {
-			await mongoclient.connect();
-			let filter = {};
-			const cursor = mongoclient.db(databaseAndCollection.db)
-			.collection(databaseAndCollection.matches_collection)
-			.find(filter);
-			
-			return await cursor.toArray();
-		} catch (e) {
-			console.error(e);
-		} finally {
-			await mongoclient.close();
-		}
-	}
-	*/
+
 	mongoclient.connect(async err => {
 		let result = await users.findOne({username: username});
 		let html = '<table id=\"pctable\">';
@@ -244,7 +222,6 @@ app.get("/viewMatches", async (request, response) => {
 			if(name != 0) {
 				html += name % 6 === 0 ? '</tr><tr class="pcrow">' : '';
 			}
-			//html += "<td class=\"pcentry\">"+result.matches[name]+"<br><img src=\""+await getImage(result.matches[name])+"\"></td>";
 			html += "<td class=\"pcentry\"><form method=\"POST\" action=\"/viewMatches\"><input type=\"text\" name=\"name\" value=\""+result.matches[name]+"\" readonly><br><input type=\"image\" src=\""+await getImage(result.matches[name])+"\" name=\"selectImage\" id=\"selectImage\"/></form></td>";
 		}
 		html += '</tr></table>';
@@ -254,22 +231,6 @@ app.get("/viewMatches", async (request, response) => {
 		}
 		response.render("viewMatches", variables);
 	});
-	/*
-	let result = await main().catch(console.error);
-	console.log("Picture");
-	console.log(await getImage("seaking"));
-	let link = await getImage("seaking");
-	let str="";
-	for(const property in result){
-		str = str + property.name + "<br><img + src=" + await getImage(property.name) +  "><br>";
-	}
-	//str = result.map(u => u.name + "<br><img + src=" + await getImage(u.name) +  "><br>").join("");
-	const variables = {
-		portNumber: portNumber,
-		Pictures: "<img + src=" + link +  ">"
-	}
-	response.render("viewMatches", variables);
-	*/
 	
 });
 
@@ -299,9 +260,6 @@ app.post("/viewMatches", (request, response) => {
 
 app.post("/match", (request, response) => {
 	mongoclient.connect(async err => {
-		//await users.insertOne({
-		//	name: request.body.name
-		//});
 		await users.findOneAndUpdate({
 			username: username
 		},
@@ -345,38 +303,12 @@ process.stdin.on('readable', () => {
 				if(err) {
 					return console.log("deletion error",err);
 				}
-				//console.log("successful delete");
 				fs.mkdir('static/pfp', {}, (err) => {
 					if(err) {
 						return console.log("creation error",err);
 					}
-					//console.log("successful create");
 				});
 			});
-		}
-		else if(command =="test") {
-			async function getInfo() {
-				const pokemoninfo = await getPokemonInfo("pikachu");
-				const abilities = pokemoninfo["abilities"];
-				let html = '';
-				for(let i in pokemoninfo["abilities"]) {
-					console.log(i);
-					console.log(pokemoninfo["abilities"][i]["ability"].name + " - " + pokemoninfo["abilities"][i]["ability"].url);
-				}
-				const variables = {
-					NAME: "pikachu",
-					Picture: await getImage("pikachu"),
-					Type: pokemoninfo["types"][0]["type"].name,
-					Gender: Math.floor(Math.random()*11) > 5 ? 'Male' : 'Female',
-					Species: pokemoninfo["species"].name,
-					Height: pokemoninfo["height"],
-					Ability: pokemoninfo["abilities"],
-					backgroundInfo: null
-				}
-				//console.log(abilities[0]["ability"].name);
-			}
-			console.log("testing with: pikachu");
-			getInfo();
 		}
 		else {
 			console.log(`Invalid command: ${command}`);
