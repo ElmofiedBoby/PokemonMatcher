@@ -157,7 +157,7 @@ app.post("/createPokemon", multer({storage: storage}).single("image"), (requests
 		}
 		else {
 			await users.insertOne({
-				image: requests.file.path,
+				image: requests.file.path.substring(7),
 				username: requests.body.username,
 				name: requests.body.name,
 				type: requests.body.type,
