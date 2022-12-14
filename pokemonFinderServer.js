@@ -133,7 +133,6 @@ var storage = multer.diskStorage({
 app.post("/createPokemon", multer({storage: storage}).single("image"), (requests, response) => {
 
 	username = requests.body.username;
-	nameOfUser = requests.body.username;
 	loggedin = true;
 
 	async function insertOnlyIfNonExistent() {
@@ -191,7 +190,7 @@ app.get("/viewMatches", async (request, response) => {
 			if(name != 0) {
 				html += name % 6 === 0 ? '</tr><tr class="pcrow">' : '';
 			}
-			html += "<td class=\"pcentry\"><form method=\"POST\" action=\"/viewMatches\"><input type=\"text\" name=\"name\" value=\""+result.matches[name]+"\" readonly><br><input type=\"image\" src=\""+await getImage(result.matches[name])+"\" name=\"selectImage\" id=\"selectImage\"/></form></td>";
+			html += "<td class=\"pcentry\"><form method=\"POST\" action=\"/viewMatches\"><input type=\"text\" name=\"name\" value=\""+result.matches[name][0]+"\" readonly><br><input type=\"image\" src=\""+result.matches[name][1]+"\" name=\"selectImage\" id=\"selectImage\"/></form></td>";
 		}
 		html += '</tr></table>';
 		const variables = {
@@ -234,7 +233,7 @@ app.post("/match", (request, response) => {
 		},
 		{
 			$push: {
-				matches: request.body.name
+				matches: [request.body.name, await getImage(request.body.name)]
 			}
 		});
 		await mongoclient.close();
