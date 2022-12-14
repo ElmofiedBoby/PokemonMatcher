@@ -298,10 +298,6 @@ function randomStr(len, arr) {
 	return ans;
 }
 
-function findMatchGender(match_name) {
-	
-}
-
 /* Server Console Logic */
 var dataInput = '';
 app.listen(portNumber);
