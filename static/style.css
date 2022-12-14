@@ -202,12 +202,11 @@ select{
     right:10px;
 }
 
-.pcrow {
-
-}
-
-.pcentry {
-
+#matchAbilitiesTable {
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    table-layout: fixed;
 }
 
 #pctable {

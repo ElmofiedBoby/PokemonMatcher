@@ -203,11 +203,11 @@ app.get("/viewMatches", async (request, response) => {
 app.post("/viewMatches", (request, response) => {
 	mongoclient.connect(async err => {
 		const pokemoninfo = await getPokemonInfo(request.body.name);
-		let html = '<ol>';
+		let html = '<table id=\"matchAbilitiesTable\">';
 		for(let i in pokemoninfo["abilities"]) {
-			html += '<li>'+pokemoninfo["abilities"][i]["ability"].name+'</li>';
+			html += '<tr><td>'+pokemoninfo["abilities"][i]["ability"].name+'</td></tr>';
 		}
-		html += '</ol>';
+		html += '</table>';
 		
 		let result = await users.findOne({username: username});
 		let matchFound = false;
@@ -221,7 +221,7 @@ app.post("/viewMatches", (request, response) => {
 					Species: pokemoninfo["species"].name,
 					Height: pokemoninfo["height"],
 					Ability: html,
-					backgroundInfo: "n/a"
+					backgroundInfo: await getMoveInfo(pokemoninfo, false)
 				};
 				response.render("viewMatchesProfile", variables);
 				matchFound = true;
@@ -289,6 +289,23 @@ function getPokemonInfo(name) {
 		});
 }
 
+function getMoveInfo(pokemoninfo, short) {
+	return P.getResource(pokemoninfo["abilities"][0]["ability"].url)
+	.then((response) => {
+		for(let name in response["effect_entries"]) {
+			if(response["effect_entries"][name]["language"].name == "en") {
+				if(short == true) {
+					return response["effect_entries"][name].short_effect;
+				}
+				else {
+					return response["effect_entries"][name].effect;
+				}
+			}
+		}
+		return "No available text in English.";
+	});
+}
+
 function randomStr(len, arr) {
 	var ans = '';
 	for (var i = len; i > 0; i--) {
@@ -326,6 +343,21 @@ process.stdin.on('readable', () => {
 					if(err) {
 						return console.log("creation error",err);
 					}
+				});
+			});
+		}
+		else if(command == "test") {
+			mongoclient.connect(async err => {
+				const pokemoninfo = await getPokemonInfo("pikachu");
+				console.log(pokemoninfo["abilities"][0]["ability"].url)
+				P.getResource(pokemoninfo["abilities"][0]["ability"].url)
+				.then((response) => {
+					for(let name in response["effect_entries"]) {
+						if(response["effect_entries"][name]["language"].name == "en") {
+							console.log(response["effect_entries"][name].effect);
+						}
+					}
+					//console.log(response["effect_entries"]); // the getResource function accepts singles or arrays of URLs/paths
 				});
 			});
 		}
