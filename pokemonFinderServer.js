@@ -77,10 +77,10 @@ app.post("/signin", (request, response) => {
 		}
 		else {
 			console.log("User does not exist!");
-			loggedin = False;
+			loggedin = false;
 			username = null;
 			const variables = {
-				usename: "no one",
+				username: "no one",
 				styleLoggedOut: "button-55",
 				styleLoggedIn: "button-55-disabled"
 			}
@@ -143,7 +143,8 @@ app.post("/createPokemon", (requests, response) => {
 				type: requests.body.type,
 				height: requests.body.height,
 				ability: requests.body.ability,
-				bginfo: requests.body.bginfo
+				bginfo: requests.body.bginfo,
+				matches: []
 			});
 		}
 		await mongoclient.close();
@@ -236,8 +237,16 @@ app.post("/viewMatchesProcess", (request, response) => {
 
 app.post("/match", (request, response) => {
 	mongoclient.connect(async err => {
-		await matches.insertOne({
-			name: request.body.name
+		//await users.insertOne({
+		//	name: request.body.name
+		//});
+		await users.findOneAndUpdate({
+			username: username
+		},
+		{
+			$push: {
+				matches: request.body.name
+			}
 		});
 		await mongoclient.close();
 	});
