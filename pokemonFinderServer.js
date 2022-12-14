@@ -62,10 +62,8 @@ app.get("/", (request, response) => {
 
 app.post("/signin", (request, response) => {
 	mongoclient.connect(async err => {
-		console.log(request.body.signin);
 		let result = await users.findOne({username: request.body.signin});
 		if(result) {
-			console.log("User exists!");
 			loggedin = true;
 			username = request.body.signin;
 			const variables = {
