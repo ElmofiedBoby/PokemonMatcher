@@ -41,6 +41,17 @@ app.set("view engine", "ejs");
 /* App Endpoints */
 app.use('/static', express.static(__dirname + '/public'));
 
+app.get("/logout", (request,response) => {
+	loggedin = false;
+	username = null;
+	let variables = {
+		username: "no one",
+		styleLoggedOut: "button-55",
+		styleLoggedIn: "button-55-disabled"
+	}
+	response.render("index", variables);
+});
+
 app.get("/", (request, response) => {
 	if(username == null) {
 		let variables = {
@@ -313,6 +324,7 @@ function randomStr(len, arr) {
 
 /* Server Console Logic */
 var dataInput = '';
+app.listen(portNumber);
 console.log(`Web server started and running at http://localhost:${portNumber}`);
 process.stdin.setEncoding("utf8");
 process.stdout.write("^_^: ")
