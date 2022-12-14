@@ -98,7 +98,7 @@ app.get("/createPokemon", (request, response) => {
 app.get("/viewProfile", (request, response) => {
 	if (loggedin) {
 		mongoclient.connect(async err => {
-			let query  = await users.findOne({username: nameOfUser});
+			let query  = await users.findOne({username: username});
 
 			const variables = {
 				image: query.image,
