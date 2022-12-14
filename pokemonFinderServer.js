@@ -124,22 +124,12 @@ app.get("/viewProfile", (request, response) => {
 	}
 })
 
-function randomStr(len, arr) {
-	var ans = '';
-	for (var i = len; i > 0; i--) {
-		ans += 
-		  arr[Math.floor(Math.random() * arr.length)];
-	}
-	return ans;
-}
-
 var storage = multer.diskStorage({
 	destination: 'static/pfp',
 	filename: function(req, file, callback) {
 	  callback(null, randomStr(26,'1234567890qwertyuiopasdfghjklzxcvbnm')+'.'+file.mimetype.split("/")[1]);
 	}
 });
-
 app.post("/createPokemon", multer({storage: storage}).single("image"), (requests, response) => {
 
 	username = requests.body.username;
@@ -191,27 +181,6 @@ app.get("/match", (request, response) => {
 			console.log('There was an ERROR: ', error);
 		});
 });
-
-function getImage(name) {
-	return P.getPokemonByName(name) // with Promise
-		.then((webresponse) => {
-			return webresponse["sprites"].front_default;
-		})
-		.catch((error) => {
-			console.log('There was an ERROR: ', error);
-		});
-}
-
-function getPokemonInfo(name) {
-	return P.getPokemonByName(name) // with Promise
-		.then((webresponse) => {
-			return webresponse;
-		})
-		.catch((error) => {
-			console.log('There was an ERROR: ', error);
-			return error;
-		});
-}
 
 app.get("/viewMatches", async (request, response) => {
 
@@ -277,6 +246,36 @@ app.post("/match", (request, response) => {
 /* Functions */
 function getProfile() {
 	mongoclient.db.getCollection();
+}
+
+function getImage(name) {
+	return P.getPokemonByName(name) // with Promise
+		.then((webresponse) => {
+			return webresponse["sprites"].front_default;
+		})
+		.catch((error) => {
+			console.log('There was an ERROR: ', error);
+		});
+}
+
+function getPokemonInfo(name) {
+	return P.getPokemonByName(name) // with Promise
+		.then((webresponse) => {
+			return webresponse;
+		})
+		.catch((error) => {
+			console.log('There was an ERROR: ', error);
+			return error;
+		});
+}
+
+function randomStr(len, arr) {
+	var ans = '';
+	for (var i = len; i > 0; i--) {
+		ans += 
+		  arr[Math.floor(Math.random() * arr.length)];
+	}
+	return ans;
 }
 
 /* Server Console Logic */
