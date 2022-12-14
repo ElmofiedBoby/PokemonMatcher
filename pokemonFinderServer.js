@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import dotenv from 'dotenv';
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import multer from 'multer';
 
 //require('alert');
 /* Port Arguments */
@@ -124,10 +125,28 @@ app.get("/viewProfile", (request, response) => {
 	}
 })
 
-app.post("/createPokemon", (requests, response) => {
+function randomStr(len, arr) {
+	var ans = '';
+	for (var i = len; i > 0; i--) {
+		ans += 
+		  arr[Math.floor(Math.random() * arr.length)];
+	}
+	return ans;
+}
+
+var storage = multer.diskStorage({
+	destination: 'static/pfp',
+	filename: function(req, file, callback) {
+	  callback(null, randomStr(26,'1234567890qwertyuiopasdfghjklzxcvbnm')+'.'+file.mimetype.split("/")[1]);
+	}
+});
+
+app.post("/createPokemon", multer({storage: storage}).single("image"), (requests, response) => {
+
 	username = requests.body.username;
 	nameOfUser = requests.body.username;
 	loggedin = true;
+
 	async function insertOnlyIfNonExistent() {
 		let result = await users.findOne({
 			username: requests.body.username
@@ -137,7 +156,7 @@ app.post("/createPokemon", (requests, response) => {
 		}
 		else {
 			await users.insertOne({
-				image: requests.body.image,
+				image: requests.file.filename,
 				username: requests.body.username,
 				name: requests.body.name,
 				type: requests.body.type,
@@ -173,6 +192,10 @@ app.get("/match", (request, response) => {
 			console.log('There was an ERROR: ', error);
 		});
 });
+
+function appendPng() {
+
+}
 
 function getImage(name) {
 	return P.getPokemonByName(name) // with Promise
