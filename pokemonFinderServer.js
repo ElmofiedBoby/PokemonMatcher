@@ -42,16 +42,54 @@ app.set("view engine", "ejs");
 app.use('/static', express.static(__dirname + '/public'));
 
 app.get("/", (request, response) => {
-	let variables = {
-		username: username
-	}
 	if(username == null) {
-		variables = {
-			username: "no one"
+		let variables = {
+			username: "no one",
+			styleLoggedOut: "button-55",
+			styleLoggedIn: "button-55-disabled"
 		}
+		response.render("index", variables);
 	}
-	response.render("index", variables);
+	else {
+		let variables = {
+			username: username,
+			styleLoggedOut: "button-55-disabled",
+			styleLoggedIn: "button-55"
+		}
+		response.render("index", variables);
+	}
 });
+
+app.post("/signin", (request, response) => {
+	mongoclient.connect(async err => {
+		console.log(request.body.signin);
+		let result = await users.findOne({username: request.body.signin});
+		if(result) {
+			console.log("User exists!");
+			loggedin = true;
+			username = request.body.signin;
+			const variables = {
+				username: username,
+				styleLoggedOut: "button-55-disabled",
+				styleLoggedIn: "button-55"
+			}
+			response.render("index", variables);
+		}
+		else {
+			console.log("User does not exist!");
+			loggedin = False;
+			username = null;
+			const variables = {
+				usename: "no one",
+				styleLoggedOut: "button-55",
+				styleLoggedIn: "button-55-disabled"
+			}
+			response.render("index", variables);
+		}
+		await mongoclient.close();
+	})
+
+})
 
 app.get("/createPokemon", (request, response) => {
 	response.render("createPokemon");
@@ -78,9 +116,11 @@ app.get("/viewProfile", (request, response) => {
 	else {
 		console.log("Please create a profile first.");
 		const variables = {
-			username: username
+			username: "no one",
+			styleLoggedOut: "button-55",
+			styleLoggedIn: "button-55-disabled"
 		}
-		response.render("/", variables);
+		response.render("index", variables);
 	}
 })
 
@@ -110,7 +150,9 @@ app.post("/createPokemon", (requests, response) => {
 	}
 	mongoclient.connect(insertOnlyIfNonExistent);
 	const variables = {
-		username: username
+		username: username,
+		styleLoggedOut: "button-55-disabled",
+		styleLoggedIn: "button-55"
 	}
 	response.render("index", variables);
 })
