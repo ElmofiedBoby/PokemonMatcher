@@ -42,7 +42,15 @@ app.set("view engine", "ejs");
 app.use('/static', express.static(__dirname + '/public'));
 
 app.get("/", (request, response) => {
-	response.render("index");
+	let variables = {
+		username: username
+	}
+	if(username == null) {
+		variables = {
+			username: "no one"
+		}
+	}
+	response.render("index", variables);
 });
 
 app.get("/createPokemon", (request, response) => {
@@ -69,7 +77,10 @@ app.get("/viewProfile", (request, response) => {
 	}
 	else {
 		console.log("Please create a profile first.");
-		response.redirect("/");
+		const variables = {
+			username: username
+		}
+		response.render("/", variables);
 	}
 })
 
@@ -98,7 +109,10 @@ app.post("/createPokemon", (requests, response) => {
 		await mongoclient.close();
 	}
 	mongoclient.connect(insertOnlyIfNonExistent);
-	response.redirect("/");
+	const variables = {
+		username: username
+	}
+	response.render("index", variables);
 })
 
 app.get("/match", (request, response) => {
