@@ -203,37 +203,60 @@ app.get("/viewMatches", async (request, response) => {
 });
 
 app.post("/viewMatches", (request, response) => {
-
-	async function getInfo() {
+	mongoclient.connect(async err => {
 		const pokemoninfo = await getPokemonInfo(request.body.name);
 		let html = '<ol>';
 		for(let i in pokemoninfo["abilities"]) {
 			html += '<li>'+pokemoninfo["abilities"][i]["ability"].name+'</li>';
 		}
 		html += '</ol>';
-		const variables = {
-			NAME: request.body.name,
-			Picture: pokemoninfo["sprites"].front_default,
-			Type: pokemoninfo["types"][0]["type"].name,
-			Gender: Math.floor(Math.random()*11) > 5 ? 'Male' : 'Female',
-			Species: pokemoninfo["species"].name,
-			Height: pokemoninfo["height"],
-			Ability: html,
-			backgroundInfo: "n/a"
+		
+		let result = await users.findOne({username: username});
+		let matchFound = false;
+		for(let name in result.matches) {
+			if(result.matches[name][0].localeCompare(request.body.name) == 0) {
+				const variables = {
+					NAME: request.body.name,
+					Picture: pokemoninfo["sprites"].front_default,
+					Type: pokemoninfo["types"][0]["type"].name,
+					Gender: result.matches[name][2],
+					Species: pokemoninfo["species"].name,
+					Height: pokemoninfo["height"],
+					Ability: html,
+					backgroundInfo: "n/a"
+				};
+				response.render("viewMatchesProfile", variables);
+				matchFound = true;
+				await mongoclient.close();
+				break;
+			}
 		}
-		response.render("viewMatchesProfile", variables);
-	}
-	getInfo();
+		if(matchFound == false) {
+			const variables = {
+				NAME: request.body.name,
+				Picture: pokemoninfo["sprites"].front_default,
+				Type: pokemoninfo["types"][0]["type"].name,
+				Gender: "n/a",
+				Species: pokemoninfo["species"].name,
+				Height: pokemoninfo["height"],
+				Ability: html,
+				backgroundInfo: "n/a"
+			};
+			response.render("viewMatchesProfile", variables);
+			await mongoclient.close();
+		}
+	});
 })
 
 app.post("/match", (request, response) => {
+	let gender = Math.floor(Math.random()*11) > 5 ? 'Male' : 'Female';
 	mongoclient.connect(async err => {
 		await users.findOneAndUpdate({
 			username: username
 		},
 		{
 			$push: {
-				matches: [request.body.name, await getImage(request.body.name)]
+				matches: [request.body.name, await getImage(request.body.name), gender]
 			}
 		});
 		await mongoclient.close();
@@ -275,6 +298,10 @@ function randomStr(len, arr) {
 		  arr[Math.floor(Math.random() * arr.length)];
 	}
 	return ans;
+}
+
+function findMatchGender(match_name) {
+	
 }
 
 /* Server Console Logic */
