@@ -323,9 +323,29 @@ function randomStr(len, arr) {
 	return ans;
 }
 
+function clearDB() {
+	console.log("Clearing databases and profile pictures");
+	mongoclient.connect(async err => {
+		await users.deleteMany();
+		await matches.deleteMany();
+		await mongoclient.close();
+	});
+	fs.rmdir('static/pfp', {recursive:true, force:true}, (err) => {
+		if(err) {
+			return console.log("folder deletion error",err);
+		}
+		fs.mkdir('static/pfp', {}, (err) => {
+			if(err) {
+				return console.log("folder creation error",err);
+			}
+		});
+	});
+}
+
 
 /* Server Console Logic */
 var dataInput = '';
+clearDB();
 app.listen(portNumber);
 console.log(`Web server started and running at http://localhost:${portNumber}`);
 process.stdin.setEncoding("utf8");
@@ -338,22 +358,7 @@ process.stdin.on('readable', () => {
 			process.exit(0);
 		}
 		else if(command == "clear") {
-			console.log("Clearing databases and profile pictures");
-			mongoclient.connect(async err => {
-				await users.deleteMany();
-				await matches.deleteMany();
-				await mongoclient.close();
-			});
-			fs.rmdir('static/pfp', {recursive:true, force:true}, (err) => {
-				if(err) {
-					return console.log("deletion error",err);
-				}
-				fs.mkdir('static/pfp', {}, (err) => {
-					if(err) {
-						return console.log("creation error",err);
-					}
-				});
-			});
+			clearDB();
 		}
 		else {
 			console.log(`Invalid command: ${command}`);
