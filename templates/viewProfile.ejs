@@ -5,6 +5,7 @@
     <title>Pokemon Card Generator</title>
     <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
     <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <script>
     function getColor() {
@@ -32,13 +33,13 @@
         document.getElementById("card").style.backgroundColor = typeColor[getType];  
     }   
 </script>
-<body id="homepage" onload="getColor()">
+<body id="homePage" onload="getColor()" >
     <a href="/" id="homeButton" class="button-55" role="button">
         <iconify-icon icon="material-symbols:home-outline-rounded" style="color: red;" width="30" height="30"></iconify-icon>
      </a>
         <a href="/logout" id="logButton" class="button-55" role="button"><iconify-icon icon='material-symbols:logout' style='color: red;' width='30' height='30'></iconify-icon></a>
+    <div id="menu">
         <h1>Your Profile</h1>
-        <div class="container">
             <div id="card">
                 <h2 class="poke-name"><%- name %></h2>
                 <div class="imgs">
@@ -67,6 +68,7 @@
             </div>
             <p id="log" style="background-color: rgba(42, 117, 187, 0.6); width:600px">Logged in as <%- username %></p>
             <br>
+    </div>
 </body>
 
 </html>

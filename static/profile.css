@@ -5,6 +5,7 @@
     text-align: center;
     padding-bottom: 20px;
     padding-top: 0px;
+    align-items: center;
 }
 
 #card {
@@ -14,16 +15,14 @@
     border-width: 1px;
     float: center;
     font-family: Gill Sans,Gill Sans MT,Calibri,sans-serif;
-    background-color: gold;
     word-wrap: break-word;
+    text-align: center;
+    margin:0 auto;
 }
 
 img {
-    position: relative;
     width: 35%;
     height: auto;
-    left: 35%;
-    align-items: center;
 }
 
 .stats{
@@ -32,7 +31,7 @@ img {
     border-color: orange;
 }
 
- body{
+body{
     background-image:
     linear-gradient(to bottom, rgba(42, 117, 187, 0.6)	,rgba(42, 117, 187, 0.6)	),
     url('bg.png');
@@ -165,12 +164,4 @@ select{
 
 .button-55:focus {
   box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
-}
-
-#homeButton {
-    margin-top: 1px;
-    margin-right: 0px;
-    position:absolute;
-    top:10px;
-    right:10px;
 }
