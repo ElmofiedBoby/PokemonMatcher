@@ -112,7 +112,24 @@ app.post("/signin", (request, response) => {
 })
 
 app.get("/createPokemon", (request, response) => {
-	response.render("createPokemon");
+	mongoclient.connect(async err => {
+		let numOfAccounts = await users.count();
+		let html = '';
+		if(numOfAccounts == 0) {
+			html = '<p>There are no accounts available to login as. Create one now!</p>';
+		}
+		else if(numOfAccounts == 1) {
+			html = '<p>There is currently one account available to login as.</p>';
+		}
+		else {
+			html = '<p>There are currently '+numOfAccounts+' accounts available to login as.</p>'
+		}
+		const variables = {
+			profiles: html
+		}
+
+		response.render("createPokemon", variables);
+	});
 })
 
 app.get("/viewProfile", (request, response) => {
@@ -337,9 +354,29 @@ function randomStr(len, arr) {
 	return ans;
 }
 
+function clearDB() {
+	console.log("Clearing databases and profile pictures");
+	mongoclient.connect(async err => {
+		await users.deleteMany();
+		await matches.deleteMany();
+		await mongoclient.close();
+	});
+	fs.rmdir('static/pfp', {recursive:true, force:true}, (err) => {
+		if(err) {
+			return console.log("folder deletion error",err);
+		}
+		fs.mkdir('static/pfp', {}, (err) => {
+			if(err) {
+				return console.log("folder creation error",err);
+			}
+		});
+	});
+}
+
 
 /* Server Console Logic */
 var dataInput = '';
+clearDB();
 app.listen(portNumber);
 console.log(`Web server started and running at http://localhost:${portNumber}`);
 process.stdin.setEncoding("utf8");
@@ -352,22 +389,7 @@ process.stdin.on('readable', () => {
 			process.exit(0);
 		}
 		else if(command == "clear") {
-			console.log("Clearing databases and profile pictures");
-			mongoclient.connect(async err => {
-				await users.deleteMany();
-				await matches.deleteMany();
-				await mongoclient.close();
-			});
-			fs.rmdir('static/pfp', {recursive:true, force:true}, (err) => {
-				if(err) {
-					return console.log("deletion error",err);
-				}
-				fs.mkdir('static/pfp', {}, (err) => {
-					if(err) {
-						return console.log("creation error",err);
-					}
-				});
-			});
+			clearDB();
 		}
 		else {
 			console.log(`Invalid command: ${command}`);
