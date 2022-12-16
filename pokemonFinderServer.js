@@ -1,13 +1,11 @@
 import Pokedex from 'pokedex-promise-v2';
-import express, { response } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import dotenv from 'dotenv';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import multer from 'multer';
 import fs from 'fs';
-import { profile } from 'console';
-import { setMaxIdleHTTPParsers } from 'http';
 
 /* Port Arguments */
 if (process.argv.length !== 3) {
