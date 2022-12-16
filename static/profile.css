@@ -10,9 +10,7 @@
 
 #card {
     width: 400px;
-    height: 100%;
-    border-style: groove;
-    border-width: 1px;
+    height: auto;
     float: center;
     font-family: Gill Sans,Gill Sans MT,Calibri,sans-serif;
     word-wrap: break-word;
@@ -25,11 +23,6 @@ img {
     height: auto;
 }
 
-.stats{
-    border-style: groove;
-    border-width: 5px;
-    border-color: orange;
-}
 
 body{
     background-image:

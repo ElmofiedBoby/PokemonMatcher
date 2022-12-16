@@ -113,16 +113,17 @@ app.post("/signin", (request, response) => {
 
 app.get("/createPokemon", (request, response) => {
 	mongoclient.connect(async err => {
-		let numOfAccounts = await users.count();
-		let html = '';
+		let numOfAccounts = await users.countDocuments();
+
+		let html = "";
 		if(numOfAccounts == 0) {
 			html = '<p>There are no accounts available to login as. Create one now!</p>';
 		}
 		else if(numOfAccounts == 1) {
-			html = '<p>There is currently one account available to login as.</p>';
+			html = '<p>There is currently one account available to login as.</p><br>';
 		}
 		else {
-			html = '<p>There are currently '+numOfAccounts+' accounts available to login as.</p>'
+			html = `<p>There are currently ${numOfAccounts} accounts available to login as.</p><br>`;
 		}
 		const variables = {
 			profiles: html
@@ -361,7 +362,7 @@ function clearDB() {
 		await matches.deleteMany();
 		await mongoclient.close();
 	});
-	fs.rmdir('static/pfp', {recursive:true, force:true}, (err) => {
+	fs.rm('static/pfp', {recursive:true, force:true}, (err) => {
 		if(err) {
 			return console.log("folder deletion error",err);
 		}
