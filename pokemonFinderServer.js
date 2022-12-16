@@ -48,7 +48,9 @@ app.get("/logout", (request,response) => {
 	let variables = {
 		username: "no one",
 		styleLoggedOut: "button-55",
-		styleLoggedIn: "button-55-disabled"
+		styleLoggedIn: "button-55-disabled",
+		valLink: "createPokemon",
+		valButton: "<iconify-icon icon='material-symbols:login' style='color: red;' width='30' height='30'></iconify-icon>"
 	}
 	response.render("index", variables);
 });
@@ -58,7 +60,9 @@ app.get("/", (request, response) => {
 		let variables = {
 			username: "no one",
 			styleLoggedOut: "button-55",
-			styleLoggedIn: "button-55-disabled"
+			styleLoggedIn: "button-55-disabled",
+			valLink: "createPokemon",
+			valButton: "<iconify-icon icon='material-symbols:login' style='color: red;' width='30' height='30'></iconify-icon>"
 		}
 		response.render("index", variables);
 	}
@@ -66,7 +70,9 @@ app.get("/", (request, response) => {
 		let variables = {
 			username: username,
 			styleLoggedOut: "button-55-disabled",
-			styleLoggedIn: "button-55"
+			styleLoggedIn: "button-55",
+			valLink: "logout",
+			valButton: "<iconify-icon icon='material-symbols:logout' style='color: red;' width='30' height='30'></iconify-icon>"
 		}
 		response.render("index", variables);
 	}
@@ -81,7 +87,9 @@ app.post("/signin", (request, response) => {
 			const variables = {
 				username: username,
 				styleLoggedOut: "button-55-disabled",
-				styleLoggedIn: "button-55"
+				styleLoggedIn: "button-55",
+				valLink: "logout",
+				valButton: "<iconify-icon icon='material-symbols:logout' style='color: red;' width='30' height='30'></iconify-icon>"
 			}
 			response.render("index", variables);
 		}
@@ -92,7 +100,9 @@ app.post("/signin", (request, response) => {
 			const variables = {
 				username: "no one",
 				styleLoggedOut: "button-55",
-				styleLoggedIn: "button-55-disabled"
+				styleLoggedIn: "button-55-disabled",
+				valLink: "createPokemon",
+				valButton: "<iconify-icon icon='material-symbols:login' style='color: red;' width='30' height='30'></iconify-icon>"
 			}
 			response.render("index", variables);
 		}
@@ -129,7 +139,9 @@ app.get("/viewProfile", (request, response) => {
 		const variables = {
 			username: "no one",
 			styleLoggedOut: "button-55",
-			styleLoggedIn: "button-55-disabled"
+			styleLoggedIn: "button-55-disabled",
+			valLink: "createPokemon",
+			valButton: "<iconify-icon icon='material-symbols:login' style='color: red;' width='30' height='30'></iconify-icon>"
 		}
 		response.render("index", variables);
 	}
@@ -171,7 +183,9 @@ app.post("/createPokemon", multer({storage: storage}).single("image"), (requests
 	const variables = {
 		username: username,
 		styleLoggedOut: "button-55-disabled",
-		styleLoggedIn: "button-55"
+		styleLoggedIn: "button-55",
+		valLink: "logout",
+		valButton:"<iconify-icon icon='material-symbols:logout' style='color: red;' width='30' height='30'></iconify-icon>"
 	}
 	response.render("index", variables);
 })

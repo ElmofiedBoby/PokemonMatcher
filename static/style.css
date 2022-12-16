@@ -11,6 +11,7 @@
     text-align: center
 }
 
+
 #pokeBall{
     color: #e4000f ;
     padding: 0px;
@@ -196,10 +197,34 @@ select{
 
 #homeButton {
     margin-top: 1px;
+    margin-left: 0px;
+    position:absolute;
+    top:10px;
+    left:10px;
+    height: 4em; 
+    width: 3.5em;
+}
+
+#homeButton:hover {
+    content: url('https://api.iconify.design/mdi/pokeball.svg?color=red&width=30&height=30');
+    height: 4em; 
+     width: 3.5em;
+}
+
+#logButton {
+    margin-top: 1px;
     margin-right: 0px;
     position:absolute;
     top:10px;
     right:10px;
+    height: 4em; 
+    width: 3.5em;
+}
+
+#logButton:hover {
+    content: url('https://api.iconify.design/mdi/pokeball.svg?color=red&width=30&height=30');
+    height: 4em; 
+     width: 3.5em;
 }
 
 #matchAbilitiesTable {
