@@ -102,7 +102,24 @@ app.post("/signin", (request, response) => {
 })
 
 app.get("/createPokemon", (request, response) => {
-	response.render("createPokemon");
+	mongoclient.connect(async err => {
+		let numOfAccounts = await users.count();
+		let html = '';
+		if(numOfAccounts == 0) {
+			html = '<p>There are no accounts available to login as. Create one now!</p>';
+		}
+		else if(numOfAccounts == 1) {
+			html = '<p>There is currently one account available to login as.</p>';
+		}
+		else {
+			html = '<p>There are currently '+numOfAccounts+' accounts available to login as.</p>'
+		}
+		const variables = {
+			profiles: html
+		}
+
+		response.render("createPokemon", variables);
+	});
 })
 
 app.get("/viewProfile", (request, response) => {
