@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import multer from 'multer';
 import fs from 'fs';
+import { profile } from 'console';
+import { setMaxIdleHTTPParsers } from 'http';
 
 /* Port Arguments */
 if (process.argv.length !== 3) {
@@ -30,6 +32,7 @@ const P = new Pokedex();
 
 let loggedin = false;
 let username = null;
+let profileType = null;
 
 /* App Setup */
 const app = express();
@@ -108,6 +111,7 @@ app.get("/viewProfile", (request, response) => {
 	if (loggedin) {
 		mongoclient.connect(async err => {
 			let query  = await users.findOne({username: username});
+			profileType = query.type;
 
 			const variables = {
 				image: query.image,
@@ -131,7 +135,7 @@ app.get("/viewProfile", (request, response) => {
 		}
 		response.render("index", variables);
 	}
-})
+});
 
 var storage = multer.diskStorage({
 	destination: 'static/pfp',
@@ -268,7 +272,6 @@ app.post("/match", (request, response) => {
 				matches: [request.body.name, await getImage(request.body.name), gender]
 			}
 		});
-		await mongoclient.close();
 	});
 	response.redirect("/match");
 })
@@ -321,6 +324,7 @@ function randomStr(len, arr) {
 	}
 	return ans;
 }
+
 
 /* Server Console Logic */
 var dataInput = '';

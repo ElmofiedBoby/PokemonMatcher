@@ -20,7 +20,7 @@
     margin-top: 0px;
     margin-right: 0px;
     position:absolute;
-    top:10px;
+    top:70px;
     right:10px;
 }
 
@@ -223,4 +223,16 @@ select{
     margin: 0;
     width: 240px;
     background: none;
+}
+
+#card {
+    width: 600px;
+    height: 100vh;
+    border-style: groove;
+    border-width: 3px;
+    float: center;
+}
+
+img {
+    width: 25%;
 }

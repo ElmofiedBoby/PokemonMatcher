@@ -20,7 +20,7 @@
         </form>
         <form enctype="multipart/form-data" action="/createPokemon" method="POST" onsubmit="return confirm('Are you sure you want to submit your Pokemon?')">
             <div id="createForm" style="border: solid gray 2px; padding: 10px;">
-                <strong id="lab">Insert Image</strong><br><input type="file" id="image" name="image" accept="image/*">
+                <strong id="lab">Insert Image</strong><br><input type="file" id="image" name="image" accept="image/*" required>
                 <br><br>
                 <strong id="formLabel">User Name: </strong><br><input name="username" id="username" type="text" required>
                 <br><br>

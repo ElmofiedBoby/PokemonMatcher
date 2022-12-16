@@ -5,48 +5,73 @@
     <title>Pokemon Card Generator</title>
     <link rel="stylesheet" href="profile.css">
 </head>
+<script>
+    function getColor() {
+        const typeColor = {
+				bug: "#26de81",
+				dragon: "#ffeaa7",
+				electric: "#fed330",
+				fairy: "#FF0069",
+				fighting: "#30336b",
+				fire: "#f0932b",
+				flying: "#81ecec",
+				grass: "#00b894",
+				ground: "#EFB549",
+				ghost: "#a55eea",
+				ice: "#74b9ff",
+				normal: "#95afc0",
+				poison: "#6c5ce7",
+				psychic: "#a29bfe",
+				rock: "#2d3436",
+				water: "#0190FF",
+			};
 
-<body>
-    <a href="/" id="homeButton" class="button-55" role="button">HOME</a>
-    <a href="/logout" id="homeButton" class="button-55" role="button">LOGOUT</a>
-    <div class="container">
-        <div id="card">
-              <h2 class="poke-name">Name</h2>
-              <%- name %>
-              <div class="imgs">
-                <img src="<%- image%>" alt="ur pokemon"> 
-              </div>
-              <div class="stats">
-                <div>
-                  <h3></h3>
-                  <p>Type</p>
-                  <%- type %>
+        getType = document.getElementById("idstat").innerHTML;
+        console.log("penis" + getType);
+        document.getElementById("card").style.backgroundColor = typeColor[getType];  
+    }   
+</script>
+<body id="homepage" onload="getColor()">
+    <a href="/" id="homeBall" class="button-55" role="button"><iconify-icon id="pokeBall" width="40" height="40"
+            icon="mdi:pokeball"></iconify-icon>
+        <a href="/logout" id="homeButton" class="button-55" role="button">LOGOUT</a>
+        <h1>Your Profile</h1>
+        <div class="container">
+            <div id="card">
+                <h2 class="poke-name"><%- name %></h2>
+                <div class="imgs">
+                    <img src="<%- image%>" alt="ur pokemon">
                 </div>
-                <div>
-                    <h3></h3>
-                    <p>Height</p>
-                    <%- height %>
+                <div class="stats" class="istat">
+                    <div id="type">
+                        <h3></h3>
+                        <p><strong>Type:</strong> &emsp; <%- type %></p>
+                        <p id="idstat" style="visibility: hidden;"><%- type %></p>
+                    </div>
+                    <div id="height" class="istat">
+                        <h3></h3>
+                        <p><strong>Height:</strong >&emsp; <%- height %></p>
+                    </div>
+                    <div id="ability" class="istat">
+                        <h3></h3>
+                        <p><strong>Ability:</strong> &emsp; <%- ability %></p>
+                    </div>
+                    <div id="bg" class="istat">
+                        <h3></h3>
+                        <p><strong>Background Info:</strong></p>
+                        <p><%- bginfo %></p>
+                    </div>
                 </div>
-                <div>
-                    <h3></h3>
-                    <p>Ability</p>
-                    <%- ability %>
-                </div>
-                <div>
-                    <h3></h3>
-                    <p>Background Info</p>
-                    <%- bginfo %>
-                </div>
-        </div>
-    </div>
-    <br>
-    <p id="log">Logged in as <%- username %></p>
-    <br>
+            </div>
+            <p id="log" style="background-color: rgba(42, 117, 187, 0.6); width:600px">Logged in as <%- username %></p>
+            <br>
 </body>
+
 </html>
 
 
-    <body> 
+<body>
 
-    </body>
+</body>
+
 </html>
